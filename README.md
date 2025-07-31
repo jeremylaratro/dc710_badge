@@ -1,6 +1,7 @@
 # DC710 DEFCON33 BADGE
 > This badge features a foxhunt and hardware-based CTF.
-> Credit to C0ldbru and N8HR.
+> Hardware developed by me.
+> Credit to C0ldbru and N8HR; code was heavily inspired by their foxhunt projects.
 
 Source code will be uploaded after DEFCON due to CTF components in the code.
 
