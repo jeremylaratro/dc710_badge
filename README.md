@@ -70,20 +70,16 @@ SA868-V VHF transceiver, single-cell LiPo, USB-C charging, OLED display,
 
 ---
 
-## Honest disclosures
+## Potential Obstacles
 
 1. **PCB trace antenna performance at VHF will be poor.**  ~150 mm of
    meander on a flying-wing PCB at 145 MHz is electrically short — expect
    single-digit-negative dBi gain.  Fine for in-room foxhunt; not for DX.
    The match network has DNP shunts (C50 / C51) for VNA tuning.
-2. **SA868 footprint is hand-built from the NiceRF datasheet.**  Verify
-   pad geometry against your actual modules before fab.
+2. **SA868 footprint is hand-built from the NiceRF datasheet.** 
 3. **Audio TX synthesis uses `ledcWriteTone()`.**  Adequate for CW /
    beacon tones, not arbitrary audio.
-4. **Frequency configuration:** firmware defaults to 146.520 MHz (US 2 m
-   simplex).  Transmitting on this freq requires a US Technician ham
-   license.  For license-free testing, swap to a SA868-U (UHF) variant
-   on PMR446 with a shorter antenna meander.
+
 
 ---
 
