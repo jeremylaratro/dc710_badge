@@ -1,0 +1,58 @@
+Reference,Qty,Value,Footprint,LCSC,Description
+U1,1,AP2112K-3.3,SOT-23-5,C51118,3.3V LDO 600mA
+U2,1,ESP32-C3-MINI-1,Module,C2934569,WiFi/BLE MCU module w/ integrated antenna
+U3,1,SA868-V,Module,C5118772,VHF transceiver module 134-174MHz
+U4,1,TP4056 module,Module-back,N/A,Pre-built 1S LiPo charger module (AliExpress/Amazon)
+U5,1,USBLC6-2SC6,SOT-23-6,C7470,USB ESD protection (optional)
+D1,1,SS14,SOD-123,C8678,Schottky diode reverse polarity
+D2,1,LED-GREEN,0603,C72043,Power-on indicator
+D3..D6,4,WS2812B-2020,WS2812-2020,C965555,RGB LED smart pixel
+J1,1,USB-C 16P,USB-C-31-M-12,C165948,USB-C receptacle 16-pin
+J2,1,SAO 2x3 Header,2.54mm 2x3,C124375,DEFCON SAO connector (1.69bis)
+J3,1,Pin Header 1x4,2.54mm 1x4,C124375,Debug UART header
+J4,1,JST PH 2P,PH-2A,C131350,LiPo battery connector
+S1,1,Tactile SMD,4x4mm,C720477,RESET button
+S2,1,Tactile SMD,4x4mm,C720477,BOOT/SEL button
+S3,1,Tactile SMD,4x4mm,C720477,UP button
+S4,1,Tactile SMD,4x4mm,C720477,DOWN button
+DISP1,1,SSD1306 128x64 OLED,7-pin 0.96 module,C90364,SPI mono OLED module
+BAT1,1,LiPo 500mAh,JST-PH 2-pin,N/A,1S LiPo 3.7V 500mAh (any cheap source)
+ANT1,1,PCB trace,N/A,N/A,Meandered trace antenna right wingtip
+R1,1,5.1k 0603,0603,C23186,USB-C CC1 pulldown
+R2,1,5.1k 0603,0603,C23186,USB-C CC2 pulldown
+R3,1,1k 0603,0603,C21190,Power LED current limit
+R4,1,10k 0603,0603,C25804,EN pull-up
+R5,1,10k 0603,0603,C25804,GPIO9 BOOT pull-up
+R6,1,10k 0603,0603,C25804,GPIO8 OLED RST pull-up
+R7,1,10k 0603,0603,C25804,SA868 PTT pull-up (idle RX)
+R8,1,10k 0603,0603,C25804,SA868 PD pull-up
+R9,1,10k 0603,0603,C25804,SA868 H/L tie high (1W TX)
+R10,1,10k 0603,0603,C25804,GPIO2 strap pull-down
+R11,1,220R 0603,0603,C22962,WS2812 first-LED data series resistor
+R12..R14,3,10k 0603,0603,C25804,Button external pull-ups (UP/DN/SEL)
+R30,1,1k 0603,0603,C21190,SA868 RXD series safety
+R31,1,1k 0603,0603,C21190,Audio TX low-pass stage 1
+R32,1,1k 0603,0603,C21190,Audio TX low-pass stage 2
+R40,1,10k 0603,0603,C25804,RX audio bias divider top
+R41,1,10k 0603,0603,C25804,RX audio bias divider bottom
+C1,1,1uF 0603,0603,C15849,LDO Vin
+C2,1,1uF 0603,0603,C15849,LDO Vout
+C3,1,100nF 0603,0603,C14663,USB VBUS bypass
+C4,1,10uF 0603,0603,C19702,+3V3 bulk
+C5,1,100nF 0603,0603,C14663,ESP32 module +3V3 decouple
+C6,1,10uF 0603,0603,C19702,ESP32 module +3V3 bulk
+C7,1,1uF 0603,0603,C15849,EN reset cap
+C8,1,100nF 0603,0603,C14663,WS2812 first decouple
+C9,1,100nF 0603,0603,C14663,WS2812 #2 decouple
+C10,1,100nF 0603,0603,C14663,WS2812 #3 decouple
+C11,1,100nF 0603,0603,C14663,WS2812 #4 decouple
+C12,1,10uF 0603,0603,C19702,WS2812 chain bulk
+C20,1,470uF 6.3V,SMD radial 8x10,C16133,SA868 VBAT bulk (LOW ESR)
+C21,1,100nF 0603,0603,C14663,SA868 VBAT HF decouple (next to pin 4)
+C30,1,100nF 0603,0603,C14663,Audio LPF stage 1
+C31,1,100nF 0603,0603,C14663,Audio LPF stage 2
+C32,1,1uF 0603,0603,C15849,Audio TX DC block
+C40,1,1uF 0603,0603,C15849,Audio RX DC block
+L1,1,0R jumper 0603,0603,C17168,RF match L slot (start with 0R)
+C50,1,DNP,0603,N/A,RF match shunt 1 (populate after VNA tuning)
+C51,1,DNP,0603,N/A,RF match shunt 2 (populate after VNA tuning)

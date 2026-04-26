@@ -1,0 +1,21 @@
+# KiCad
+*.kicad_prl
+*-backups/
+~*.lck
+*.bak
+fp-info-cache
+_autosave-*
+
+# Python build
+__pycache__/
+*.pyc
+*.pyo
+
+# Build outputs
+build/
+
+# Editor
+.vscode/
+.idea/
+*.swp
+.DS_Store
