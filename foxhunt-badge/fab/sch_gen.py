@@ -645,7 +645,10 @@ def build_lib_symbols() -> str:
     """Read all needed (symbol ...) blocks; assemble lib_symbols section.
     Derived symbols (extends) are flattened so each lib_symbols entry is
     self-contained."""
-    needed_libids = sorted({c["lib_id"] for c in COMPS})
+    needed_libids = set(c["lib_id"] for c in COMPS)
+    # Also include the power symbols we use for net-port labels
+    needed_libids.update(POWER_SYMBOL_NET.values())
+    needed_libids = sorted(needed_libids)
     blocks: dict[str, str] = {}  # by qualified lib_id
     for libid in needed_libids:
         lib_part, sym_name = libid.split(":", 1)
@@ -745,17 +748,65 @@ def emit_junction(x, y) -> str:
 SHEET_UUID = U()
 
 
+def emit_power_symbol(x, y, libid, ref_id, ang):
+    """Emit a power port symbol (power:GND, power:+3V3, etc.) anchored at
+    a wire endpoint.  Rotation chosen so the label sits AWAY from the pin
+    (outward).  ang is the OUTWARD direction in degrees:
+        0 = +X (right), 90 = -Y (up), 180 = -X (left), 270 = +Y (down)."""
+    sym_name = libid.split(":", 1)[1]
+    rot = {0: 90, 90: 0, 180: 270, 270: 180}.get(ang, 0)
+    return (
+        f'\t(symbol\n'
+        f'\t\t(lib_id "{libid}")\n'
+        f'\t\t(at {x:.3f} {y:.3f} {rot})\n'
+        f'\t\t(unit 1)\n'
+        f'\t\t(exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no)\n'
+        f'\t\t(uuid "{U()}")\n'
+        f'\t\t(property "Reference" "#PWR{ref_id}" (at {x:.3f} {y - 3:.3f} 0)\n'
+        f'\t\t\t(effects (font (size 1.27 1.27)) (hide yes)))\n'
+        f'\t\t(property "Value" "{sym_name}" (at {x:.3f} {y - 1.5:.3f} {rot})\n'
+        f'\t\t\t(effects (font (size 1.27 1.27))))\n'
+        f'\t\t(property "Footprint" "" (at {x:.3f} {y:.3f} 0)\n'
+        f'\t\t\t(effects (font (size 1.27 1.27)) (hide yes)))\n'
+        f'\t\t(property "Datasheet" "" (at {x:.3f} {y:.3f} 0)\n'
+        f'\t\t\t(effects (font (size 1.27 1.27)) (hide yes)))\n'
+        f'\t\t(pin "1" (uuid "{U()}"))\n'
+        f'\t\t(instances\n'
+        f'\t\t\t(project "foxhunt-badge"\n'
+        f'\t\t\t\t(path "/{SHEET_UUID}"\n'
+        f'\t\t\t\t\t(reference "#PWR{ref_id}") (unit 1))))\n'
+        f'\t)'
+    )
+
+
+# Power nets that should use power symbols instead of net labels at every
+# pin (KiCad convention).  Stock power lib has GND, +3V3, VBUS but no
+# VBAT; VBAT/VBAT_RAW remain as net labels.
+POWER_SYMBOL_NET = {
+    "GND":      "power:GND",
+    "+3V3":     "power:+3V3",
+    "VBUS":     "power:VBUS",
+}
+
+
 def build_wires_labels():
-    """For each (component, pin) in NETS, emit wire stub + label."""
+    """For each (component, pin) in NETS, emit wire stub + either a net
+    label (signal) or a power symbol (GND, +3V3, etc.)."""
     out = []
-    # Keep track of which pins we covered so we can NoConnect the rest.
     covered_pins = set()
+    pwr_id_counter = [100]  # for unique #PWR refs
+
+    def next_pwr_id():
+        pwr_id_counter[0] += 1
+        return pwr_id_counter[0]
+
     label_orient = {  # outward direction -> KiCad label angle
         ( 1,  0): 0,    # right
         ( 0,  1): 270,  # down
         (-1,  0): 180,  # left
         ( 0, -1): 90,   # up
     }
+    outward_deg = {(1,0): 0, (0,1): 270, (-1,0): 180, (0,-1): 90}
     for net, pins in NETS.items():
         # Single-pin nets become NoConnect markers (no label, no wire)
         if len(pins) == 1:
@@ -765,6 +816,7 @@ def build_wires_labels():
             covered_pins.add((ref, num))
             out.append(emit_no_connect(ax, ay))
             continue
+        is_power = net in POWER_SYMBOL_NET
         for ref, num in pins:
             c = next(c for c in COMPS if c["ref"] == ref)
             ax, ay, ang, et = abs_pin(c, num)
@@ -772,8 +824,14 @@ def build_wires_labels():
             dx, dy = OUTWARD[ang]
             ex, ey = snap(ax + dx * STUB), snap(ay + dy * STUB)
             out.append(emit_wire(ax, ay, ex, ey))
-            # Place label at wire endpoint, oriented outward
-            out.append(emit_label(ex, ey, net, angle=label_orient[(dx, dy)]))
+            if is_power:
+                pwr_libid = POWER_SYMBOL_NET[net]
+                out.append(emit_power_symbol(
+                    ex, ey, pwr_libid, next_pwr_id(),
+                    outward_deg[(dx, dy)]))
+            else:
+                out.append(emit_label(ex, ey, net,
+                                      angle=label_orient[(dx, dy)]))
     # NoConnect every visible pin not in any net
     for c in COMPS:
         libid = c["lib_id"]
