@@ -8,9 +8,17 @@ SA868-V VHF transceiver, single-cell LiPo, USB-C charging, OLED display,
 (wingspan/length ≈ 2.5).  Outline extracted from a real B-2 STL mesh —
 3 aft-pointing spikes, engine-cutout notches, sharp swept wingtips.
 
+### 3D render — Top (F.Cu)
 ![Top view](images/badge_top.png)
 
+### 3D render — Bottom (B.Cu)
 ![Bottom view](images/badge_bottom.png)
+
+### Official blueprint — Front
+![Front blueprint](images/badge_front_blueprint.png)
+
+### Official blueprint — Back
+![Back blueprint](images/badge_back_blueprint.png)
 
 ---
 
