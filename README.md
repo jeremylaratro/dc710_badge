@@ -53,10 +53,10 @@ SA868-V VHF transceiver, single-cell LiPo, USB-C charging, OLED display,
 
 ## What's left to hand-finish
 
-[] Route the 3 remaining nets in pcbnew (audio LPF cluster).
-[] Move 4 short traces out of the antenna keep-out zones (RF perf).
-[] Reposition silkscreen reference designators that overlap pads.
-[] Order Gerbers 
+[x] Route the 3 remaining nets in pcbnew (audio LPF cluster).
+[x] Move 4 short traces out of the antenna keep-out zones (RF perf).
+[x] Reposition silkscreen reference designators that overlap pads.
+[ ] Order Gerbers 
 
 ---
 
